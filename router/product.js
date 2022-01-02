@@ -19,11 +19,10 @@ let upload = multer({ storage })
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-require("../model/db")
 const product = require("../model/product")
 
 app.get("/", async(req, res) => {
-    const products = await product.find().limit(20)
+    const products = await product.find().sort({ updatedAt: -1 }).limit(20)
     res.json({ products })
 })
 
@@ -43,16 +42,6 @@ app.get("/id/:id", async(req, res) => {
 app.post("/", upload.array("image"), async(req, res) => {
     let { name, price, barcode, stock } = req.body,
         data = { name, price, barcode, stock }
-        // let data = {
-        //     name: req.body.name,
-        //     price: req.body.price,
-        // }
-        // if (req.body.barcode) {
-        //     data.barcode = req.body.barcode
-        // }
-        // if (req.body.stock) {
-        //     data.stock = req.body.stock
-        // }
     if (req.files) {
         data.image = []
         req.files.forEach((element) => {

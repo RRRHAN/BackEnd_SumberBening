@@ -4,18 +4,21 @@ const express = require("express"),
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-require("../model/db")
 const transaction = require("../model/transaction")
 
 app.get("/", async(req, res) => {
-    const transactions = await transaction.find()
+    const transactions = await transaction.find().sort({ date: -1 }).limit(20)
     res.json({ transactions })
 })
 
 app.get("/:keyword", async(req, res) => {
     const keyword = req.params.keyword
-    const transactionData = await transaction.findById(keyword)
-    res.json({ transactionData })
+    try {
+        const transactionData = await transaction.findById(keyword)
+        res.json({ transactionData })
+    } catch (err) {
+        res.send(err.message)
+    }
 })
 
 app.post("/", async(req, res) => {

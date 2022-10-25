@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
-const ApiError = require('../utils/ApiError');
+const ApiDebug = require('../utils/ApiDebug');
 
 const validate = (schema) => (req, res, next) => {
   const validSchema = pick(schema, ['params', 'query', 'body']);
@@ -12,7 +12,7 @@ const validate = (schema) => (req, res, next) => {
 
   if (error) {
     const errorMessage = error.details.map((details) => details.message).join(', ');
-    return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage));
+    return next(new ApiDebug(httpStatus.BAD_REQUEST, errorMessage, 'Joi-validate'));
   }
   Object.assign(req, value);
   return next();

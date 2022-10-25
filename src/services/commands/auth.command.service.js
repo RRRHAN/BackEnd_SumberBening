@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
-const ApiError = require('../utils/ApiError');
-const config = require('../config/config');
-const generateToken = require('../utils/generateToken');
+const ApiDebug = require('../../utils/ApiDebug');
+const config = require('../../config/config');
+const generateToken = require('../../utils/generateToken');
 
 /**
  * Login with username and password
@@ -16,11 +16,11 @@ const login = async (payload) => {
   const user = config.accessUser;
 
   if (user.username !== payload.username) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid Username', context);
+    throw new ApiDebug(httpStatus.BAD_REQUEST, 'Invalid Username', context);
   }
 
   if (user.password !== payload.password) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid password', context);
+    throw new ApiDebug(httpStatus.BAD_REQUEST, 'Invalid password', context);
   }
 
   const token = generateToken(user);

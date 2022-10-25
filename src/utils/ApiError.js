@@ -4,6 +4,7 @@ class ApiError extends Error {
     this.statusCode = statusCode;
     this.isOperational = isOperational;
     this.context = context;
+    this.level = 'error';
     if (stack) {
       this.stack = stack;
     } else {

@@ -28,8 +28,10 @@ const errorHandler = (err, req, res, next) => {
     message,
   };
 
-  if (config.env === 'development') {
+  if (err.level === 'error') {
     logger.error(err, { context: err.context });
+  } else {
+    logger.debug(err, { context: err.context });
   }
 
   res.status(statusCode).send(response);

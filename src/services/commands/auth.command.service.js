@@ -16,7 +16,7 @@ const login = async (payload) => {
   const user = config.accessUser;
 
   if (user.username !== payload.username) {
-    throw new ApiDebug(httpStatus.BAD_REQUEST, 'Invalid Username', context);
+    throw new ApiDebug(httpStatus.BAD_REQUEST, 'Invalid username', context);
   }
 
   if (user.password !== payload.password) {
@@ -25,7 +25,7 @@ const login = async (payload) => {
 
   const token = generateToken(user);
 
-  return { accessToken: token };
+  return { data: { accessToken: token }, message: 'Success login', statusCode: httpStatus.OK };
 };
 
 module.exports = {

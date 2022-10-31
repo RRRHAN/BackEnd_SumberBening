@@ -4,7 +4,7 @@ const { authService } = require('../services');
 const login = catchAsync(async (req, res) => {
   const { username, password } = req.body;
   const result = await authService.login({ username, password });
-  res.send(result);
+  res.status(result.statusCode).send(result);
 });
 
 module.exports = {

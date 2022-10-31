@@ -30,37 +30,39 @@ module.exports = router;
  *           schema:
  *             type: object
  *             required:
- *               - email
+ *               - username
  *               - password
  *             properties:
- *               email:
+ *               username:
  *                 type: string
- *                 format: email
  *               password:
  *                 type: string
  *                 format: password
  *             example:
- *               email: fake@example.com
+ *               email: username1
  *               password: password1
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 user:
- *                   $ref: '#/components/schemas/User'
- *                 tokens:
- *                   $ref: '#/components/schemas/AuthTokens'
- *       "401":
- *         description: Invalid email or password
+ *             example:
+ *               data:
+ *                  accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiIxMjMiLCJpYXQiOjE2NjcxODg4NTUsImV4cCI6NjE2NjcxODg3OTV9.6mnuCqiOpnbNkIxYbt67OZ7MDjHeWjn-yv3SkVIzRiY
+ *               message: Success login
+ *               statusCode: 200
+ *       "400 Invalid Username":
+ *         description: Invalid username
  *         content:
  *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
  *             example:
- *               code: 401
- *               message: Invalid email or password
+ *               statusCode: 400
+ *               message: Invalid username
+ *       "400 Invalid Password":
+ *         description: Invalid password
+ *         content:
+ *           application/json:
+ *             example:
+ *               statusCode: 400
+ *               message: Invalid password
  */

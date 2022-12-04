@@ -1,0 +1,47 @@
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        customerId:
+          type: string
+        name:
+          type: string
+        address:
+         type: string
+        phone:
+          type: string
+        status:
+          type: string
+      example:
+        customerId: customerId-4d0b07b7-d4e7-452c-8ba5-8929239d1d61
+        name: Raihan Ganteng
+        address: Jl. doang jadian kagak kota Malang Jawa Timur
+        phone: 07717370678
+        status: show
+    Error:
+      type: object
+      properties:
+        code:
+          type: number
+        message:
+          type: string
+  responses:
+    UnauthorizedError:
+      description: Authentication information is missing or invalid
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: Unauthorized
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    basicAuth:
+      type: http
+      scheme: basic
+security:
+  - bearerAuth: [] 
+  - basicAuth: []

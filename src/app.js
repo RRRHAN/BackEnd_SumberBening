@@ -19,6 +19,27 @@ if (config.env !== 'test') {
   app.use(morgan.errorHandler);
 }
 
+// parse query
+app.use((req, res, next) => {
+  const { query } = req;
+  if (query.sortBy) {
+    try {
+      query.sortBy = JSON.parse(query.sortBy);
+    } catch (err) {
+      next(new ApiDebug(httpStatus.BAD_REQUEST, 'sortBy must be a valid object', 'parseQuery-sortBy'));
+    }
+  }
+  if (query.query) {
+    try {
+      query.query = JSON.parse(query.query);
+    } catch (err) {
+      next(new ApiDebug(httpStatus.BAD_REQUEST, 'query must be a valid object', 'parseQuery-query'));
+    }
+  }
+  req.query = query;
+  next();
+});
+
 // set security HTTP headers
 app.use(helmet());
 
@@ -26,7 +47,7 @@ app.use(helmet());
 app.use(express.json());
 
 // parse urlencoded request body
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 // sanitize request data
 app.use(xss());

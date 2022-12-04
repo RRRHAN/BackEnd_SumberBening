@@ -1,0 +1,287 @@
+tags:
+  name: Customer
+  description: Customer module
+
+/customer:
+  get:
+    summary: Get customer by id
+    tags: [Customer]
+    security:
+      - bearerAuth: []
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Customer'
+                message:
+                  type: string
+                  example: Success findMany customer
+                statusCode:
+                  type: number
+                  example: 200
+                page:
+                  type: object
+                  properties:
+                    current:
+                      type: number
+                      example: 1
+                    quantity:
+                      type: number
+                      example: 20
+                    totalPage:
+                      type: number
+                      example: 10
+                    totalData:
+                      type: number
+                      example: 200
+      "400":
+        description: Data unmatched with validation (Bad request)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 400
+              message: "\"name\" must be one of [1, -1]"
+      "401":
+        $ref: '#/components/responses/UnauthorizedError'
+      "500":
+        description: Failed to get customer
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 500
+              message: Error findMany nedb server is down
+  post:
+    summary: Create new customer
+    tags: [Customer]
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+              - address
+            properties:
+              name:
+                type: string
+              address:
+                type: string
+              phone:
+                type: string
+            example:
+              name: Raihan Ganteng
+              address: Jl. doang jadian kagak kota Malang Jawa Timur
+              phone: "07717370678"
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Customer'
+                message:
+                  type: string
+                  example: Success insert customer data
+                statusCode:
+                  type: number
+                  example: 200
+      "400":
+        description: Data unmatched with validation (Bad request)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 400
+              message: "\"name\" is required"
+      "401":
+        $ref: '#/components/responses/UnauthorizedError'
+      "500":
+        description: Failed to insert new customer
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 500
+              message: Error insertOne nedb server is down
+
+/customer/{customerId}:
+  get:
+    summary: Get customer by id
+    tags: [Customer]
+    security:
+      - bearerAuth: []  
+    parameters:
+      - in: path
+        name: customerId
+        required: true
+        schema:
+          type: string
+        description: Customer Id
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Customer'
+                message:
+                  type: string
+                  example: Success update customer data
+                statusCode:
+                  type: number
+                  example: 200
+      "400":
+        description: Data unmatched with validation (Bad request)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 400
+              message: "\"\"customerId\"\" must be a valid uuid v4 with prefix customerId"
+      "401":
+        $ref: '#/components/responses/UnauthorizedError'
+      "500":
+        description: Failed to get customer
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 500
+              message: Error findOne nedb server is down
+  put:
+    summary: Update customer
+    tags: [Customer]
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: customerId
+        required: true
+        schema:
+          type: string
+        description: Customer Id
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              address:
+                type: string
+              phone:
+                type: string
+            example:
+              name: Raihan Ganteng
+              address: Jl. doang jadian kagak kota Malang Jawa Timur
+              phone: "07717370678"
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Customer'
+                message:
+                  type: string
+                  example: Success update customer data
+                statusCode:
+                  type: number
+                  example: 200
+      "400":
+        description: Data unmatched with validation (Bad request)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 400
+              message: "\"name\" is required"
+      "401":
+        $ref: '#/components/responses/UnauthorizedError'
+      "500":
+        description: Failed to insert new customer
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 500
+              message: Error updateOne nedb server is down
+  delete:
+    summary: Delete customer
+    tags: [Customer]
+    security:
+      - bearerAuth: []  
+    parameters:
+      - in: path
+        name: customerId
+        required: true
+        schema:
+          type: string
+        description: Customer Id
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Customer'
+                message:
+                  type: string
+                  example: Success update customer data
+                statusCode:
+                  type: number
+                  example: 200
+      "400":
+        description: Data unmatched with validation (Bad request)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 400
+              message: "\"\"customerId\"\" must be a valid uuid v4 with prefix customerId"
+      "401":
+        $ref: '#/components/responses/UnauthorizedError'
+      "500":
+        description: Failed to insert new customer
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 500
+              message: Error deleteOne nedb server is down
+

@@ -1,0 +1,472 @@
+tags:
+  name: Product
+  description: Product module
+
+/product:
+  get:
+    summary: Get products
+    tags: [Product]
+    security:
+      - bearerAuth: []
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Product'
+                message:
+                  type: string
+                  example: Success findMany product
+                statusCode:
+                  type: number
+                  example: 200
+                page:
+                  type: object
+                  properties:
+                    current:
+                      type: number
+                      example: 1
+                    quantity:
+                      type: number
+                      example: 20
+                    totalPage:
+                      type: number
+                      example: 10
+                    totalData:
+                      type: number
+                      example: 200
+      "400":
+        description: Data unmatched with validation (Bad request)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 400
+              message: "\"name\" must be one of [1, -1]"
+      "401":
+        $ref: '#/components/responses/UnauthorizedError'
+      "500":
+        description: Failed to get product(s)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 500
+              message: Error findMany nedb unable to access the file
+  post:
+    summary: Create new product
+    tags: [Product]
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - name
+              - price
+            properties:
+              name:
+                type: string
+                example: Pintu Kayu
+              price:
+                type: number
+                example: 400000
+              description:
+                type: string
+                example: pintu kayu dengan motif yang bisa di pilih motif dan ukurannya
+              stock:
+                type: number
+                example: 10
+              barcode:
+                type: string
+                example: 17182975282
+              productImages:
+                type: array
+                items:
+                  type: string
+                  format: binary
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Product'
+                message:
+                  type: string
+                  example: Success insert product data
+                statusCode:
+                  type: number
+                  example: 200
+      "400":
+        description: Data unmatched with validation (Bad request)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 400
+              message: "\"name\" is required"
+      "401":
+        $ref: '#/components/responses/UnauthorizedError'
+      "500":
+        description: Failed to insert new product
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 500
+              message: Error insertOne nedb unable to access the file
+
+/product/{productId}:
+  get:
+    summary: Get product by id
+    tags: [Product]
+    security:
+      - bearerAuth: []  
+    parameters:
+      - in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+          example: productId-a4f9da7b-681c-4728-967f-eead1efdb32b
+        description: Product Id
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Product'
+                message:
+                  type: string
+                  example: Success find product by id
+                statusCode:
+                  type: number
+                  example: 200
+      "400":
+        description: Data unmatched with validation (Bad request)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 400
+              message: "\"\"productId\"\" must be a valid uuid v4 with prefix productId"
+      "401":
+        $ref: '#/components/responses/UnauthorizedError'
+      "500":
+        description: Failed to get product by id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 500
+              message: Error findOne nedb unable to access the file
+  put:
+    summary: Update product
+    tags: [Product]
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+          example: productId-a4f9da7b-681c-4728-967f-eead1efdb32b
+        description: Product Id
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              price:
+                type: number
+              description:
+                type: string
+              stock:
+                type: number
+              barcode:
+                type: string
+            example:
+              name: Pintu Kayu
+              price: 400000
+              description: pintu kayu dengan motif yang bisa di pilih motif dan ukurannya
+              stock: 10
+              barcode: "17182975282"
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Product'
+                message:
+                  type: string
+                  example: Success update product data
+                statusCode:
+                  type: number
+                  example: 200
+      "400":
+        description: Data unmatched with validation (Bad request)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 400
+              message: "\"name\" must be a string"
+      "401":
+        $ref: '#/components/responses/UnauthorizedError'
+      "500":
+        description: Failed to update product data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 500
+              message: Error updateOne nedb unable to access the file
+  delete:
+    summary: Delete product
+    tags: [Product]
+    security:
+      - bearerAuth: []  
+    parameters:
+      - in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+          example: productId-a4f9da7b-681c-4728-967f-eead1efdb32b
+        description: Product Id
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  example:
+                    numRemoved: 1
+                message:
+                  type: string
+                  example: Success delete product data
+                statusCode:
+                  type: number
+                  example: 200
+      "400":
+        description: Data unmatched with validation (Bad request)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 400
+              message: "\"\"productId\"\" must be a valid uuid v4 with prefix productId"
+      "401":
+        $ref: '#/components/responses/UnauthorizedError'
+      "500":
+        description: Failed to delete product data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 500
+              message: Error deleteOne nedb unable to access the file
+
+/product/image/{productImage}:
+  get:
+    summary: Get product image by filename
+    tags: [Product]
+    security:
+      - bearerAuth: []  
+    parameters:
+      - in: path
+        name: productImage
+        required: true
+        schema:
+          type: string
+          example: productImage-a4f9da7b-681c-4728-967f-eead1efdb32b.jpg
+        description: Product image filename
+    responses:
+      "200":
+        description: OK
+        content:
+          application/image:
+            schema:
+              type: string
+              format: binary
+      "401":
+        $ref: '#/components/responses/UnauthorizedError'
+      "404":
+        description: product image not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 404
+              message: Not found
+      "500":
+        description: Failed to get product image
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 500
+              message: Error cannot get product image
+
+/product/image/{productId}:
+  put:
+    summary: Add product images
+    tags: [Product]
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+          example: productId-a4f9da7b-681c-4728-967f-eead1efdb32b
+        description: Product Id
+    requestBody:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required: productImages
+            properties:
+              productImages:
+                type: array
+                items:
+                  type: string
+                  format: binary
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Product'
+                message:
+                  type: string
+                  example: Success update product data
+                statusCode:
+                  type: number
+                  example: 200
+      "400":
+        description: Data unmatched with validation (Bad request)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 400
+              message: "\"mimetype\" must be one of [image/jpeg, image/png]"
+      "401":
+        $ref: '#/components/responses/UnauthorizedError'
+      "500":
+        description: Failed to insert new product image(s)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 500
+              message: Error File system failed write file
+  delete:
+    summary: Delete product image
+    tags: [Product]
+    security:
+      - bearerAuth: []  
+    parameters:
+      - in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+          example: productId-a4f9da7b-681c-4728-967f-eead1efdb32b
+        description: Product Id
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              filename:
+                type: string
+                example: productImage-9d9ba17f-8501-4c5d-ade5-1e2ef2add394.jpg
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Product'
+                message:
+                  type: string
+                  example: Success delete product image
+                statusCode:
+                  type: number
+                  example: 200
+      "400":
+        description: Data unmatched with validation (Bad request)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 400
+              message: "\"\"productId\"\" must be a valid uuid v4 with prefix productId"
+      "401":
+        $ref: '#/components/responses/UnauthorizedError'
+      "500":
+        description: Failed to delete product image
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+            example:
+              statusCode: 500
+              message: Error File system failed delete file
+

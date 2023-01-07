@@ -29,7 +29,11 @@ const errorHandler = (err, req, res, next) => {
   };
 
   if (err.level === 'error') {
-    logger.error(err, { context: err.context });
+    if (config.env === 'development') {
+      logger.error(err.stack, { context: err.context });
+    } else {
+      logger.error(err, { context: err.context });
+    }
   } else {
     logger.debug(err, { context: err.context });
   }

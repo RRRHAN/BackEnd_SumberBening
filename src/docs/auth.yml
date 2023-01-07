@@ -24,7 +24,7 @@ tags:
                 type: string
                 format: password
             example:
-              email: username1
+              username: username1
               password: password1
     responses:
       "200":

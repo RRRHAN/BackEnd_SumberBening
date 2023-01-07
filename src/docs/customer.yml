@@ -4,7 +4,7 @@ tags:
 
 /customer:
   get:
-    summary: Get customer by id
+    summary: Get customer(s)
     tags: [Customer]
     security:
       - bearerAuth: []
@@ -60,7 +60,7 @@ tags:
               $ref: '#/components/schemas/Error'
             example:
               statusCode: 500
-              message: Error findMany nedb server is down
+              message: Error findMany nedb unable to access the file
   post:
     summary: Create new customer
     tags: [Customer]
@@ -121,7 +121,7 @@ tags:
               $ref: '#/components/schemas/Error'
             example:
               statusCode: 500
-              message: Error insertOne nedb server is down
+              message: Error insertOne nedb unable to access the file
 
 /customer/{customerId}:
   get:
@@ -135,6 +135,7 @@ tags:
         required: true
         schema:
           type: string
+          example: customerId-4d0b07b7-d4e7-452c-8ba5-8929239d1d61
         description: Customer Id
     responses:
       "200":
@@ -148,7 +149,7 @@ tags:
                   $ref: '#/components/schemas/Customer'
                 message:
                   type: string
-                  example: Success update customer data
+                  example: Success find customer by id 
                 statusCode:
                   type: number
                   example: 200
@@ -171,7 +172,7 @@ tags:
               $ref: '#/components/schemas/Error'
             example:
               statusCode: 500
-              message: Error findOne nedb server is down
+              message: Error findOne nedb unable to access the file
   put:
     summary: Update customer
     tags: [Customer]
@@ -183,6 +184,7 @@ tags:
         required: true
         schema:
           type: string
+          example: customerId-4d0b07b7-d4e7-452c-8ba5-8929239d1d61
         description: Customer Id
     requestBody:
       content:
@@ -228,14 +230,14 @@ tags:
       "401":
         $ref: '#/components/responses/UnauthorizedError'
       "500":
-        description: Failed to insert new customer
+        description: Failed to update customer data
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Error'
             example:
               statusCode: 500
-              message: Error updateOne nedb server is down
+              message: Error updateOne nedb unable to access the file
   delete:
     summary: Delete customer
     tags: [Customer]
@@ -247,6 +249,7 @@ tags:
         required: true
         schema:
           type: string
+          example: customerId-4d0b07b7-d4e7-452c-8ba5-8929239d1d61
         description: Customer Id
     responses:
       "200":
@@ -257,10 +260,12 @@ tags:
               type: object
               properties:
                 data:
-                  $ref: '#/components/schemas/Customer'
+                  type: object
+                  example:
+                    numRemoved: 1
                 message:
                   type: string
-                  example: Success update customer data
+                  example: Success delete customer data
                 statusCode:
                   type: number
                   example: 200
@@ -276,12 +281,12 @@ tags:
       "401":
         $ref: '#/components/responses/UnauthorizedError'
       "500":
-        description: Failed to insert new customer
+        description: Failed to delete customer data
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Error'
             example:
               statusCode: 500
-              message: Error deleteOne nedb server is down
+              message: Error deleteOne nedb unable to access the file
 

@@ -19,6 +19,39 @@ components:
         address: Jl. doang jadian kagak kota Malang Jawa Timur
         phone: 07717370678
         status: show
+    Product:
+      type: object
+      properties:
+        productId:
+          type: string
+        name:
+          type: string
+        price:
+         type: number
+        description:
+          type: string
+        stock:
+          type: number
+        barcode:
+          type: string
+        productImages:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+      example:
+        productId: productId-a4f9da7b-681c-4728-967f-eead1efdb32b
+        name: Pintu Kayu
+        price: 400000
+        description: pintu kayu dengan motif yang bisa di pilih motif dan ukurannya
+        stock: 10
+        barcode: 17182975282
+        productImages:
+          example:
+            - productImage-4979d10c-6613-4cc1-aa10-a96adc306ff8.jpg
+            - productImage-5752fc66-1b64-4adb-8d73-2a343cb78b2a.jpg
+        status: show
     Error:
       type: object
       properties:

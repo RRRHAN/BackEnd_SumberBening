@@ -6,7 +6,7 @@ const createCustomer = {
   body: Joi.object().keys({
     name: Joi.string().required(),
     address: Joi.string().required(),
-    phone: Joi.string().required(),
+    phone: Joi.string().optional(),
   }),
 };
 
@@ -15,12 +15,12 @@ const updateCustomer = {
     customerId: Joi.required().custom(id('customer')),
   }),
   body: Joi.object().keys({
-    name: Joi.string().required(),
-    address: Joi.string().required(),
-    phone: Joi.string().required(),
+    name: Joi.string().optional(),
+    address: Joi.string().optional(),
+    phone: Joi.string().optional(),
     status: Joi.string()
       .valid(...Object.values(dataStatus))
-      .required(),
+      .optional(),
   }),
 };
 

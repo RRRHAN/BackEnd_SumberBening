@@ -1,13 +1,7 @@
 const Datastore = require('nedb-promise');
 const path = require('path');
 const httpStatus = require('http-status');
-const logger = require('../../config/logger');
-const ApiError = require('../../utils/ApiError');
-
-const errorReturn = (statusCode, message, context) => {
-  logger.error(message, { context });
-  return new ApiError(statusCode, message, context);
-};
+const errorReturn = require('../../utils/errorReturn');
 
 class NeDB {
   constructor(collectionName) {

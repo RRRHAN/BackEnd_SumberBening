@@ -4,7 +4,7 @@ const pick = require('../utils/pick');
 const ApiDebug = require('../utils/ApiDebug');
 
 const validate = (schema) => (req, res, next) => {
-  const validSchema = pick(schema, ['params', 'query', 'body']);
+  const validSchema = pick(schema, ['params', 'query', 'body', 'files']);
   const object = pick(req, Object.keys(validSchema));
   const { value, error } = Joi.compile(validSchema)
     .prefs({ errors: { label: 'key' }, abortEarly: false })

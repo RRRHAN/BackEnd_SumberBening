@@ -1,3 +1,6 @@
+# Deprecated
+this repo is not used anymore and used newer version for this app
+
 # BackEnd Sumber Bening
 This project is API for TB. Sumber Bening Desktop App and Web App
 
